@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
@@ -12,7 +15,10 @@ class TodoController extends Controller
      */
     public function index()
     {
-        //
+        $todos = Auth::user()->todos()->orderBy('status','desc')->get();
+        return Inertia::render('Dashboard', [
+            'todos' => $todos
+        ]);
     }
 
     /**
@@ -20,15 +26,22 @@ class TodoController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Todo/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        Auth::user()->todos()->create([
+            'task' => $request->task,
+            'detail' => $request->detail ?? '',
+            'completed' => $request->completed ?? FALSE,
+            'status' => $request->completed ? 'done' : 'new'
+        ]);
+
+        return redirect(route('todo.dashboard'));
     }
 
     /**
@@ -44,7 +57,9 @@ class TodoController extends Controller
      */
     public function edit(Todo $todo)
     {
-        //
+        return Inertia::render('Todo/Edit',[
+            'task' => $todo
+        ]);
     }
 
     /**
@@ -52,7 +67,14 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-        //
+        $todo->update([
+            'task' => $request->task,
+            'detail' => $request->detail ?? '',
+            'due_date' => $request->due_date ?? NULL,
+            'completed' => $request->completed ?? FALSE,
+            'status' => $request->status
+        ]);
+        return redirect()->back();
     }
 
     /**
@@ -60,6 +82,7 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
-        //
+        $todo->delete();
+        return redirect()->back();
     }
 }

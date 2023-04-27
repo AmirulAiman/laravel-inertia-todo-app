@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TodoController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,9 +26,15 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::prefix('/dashboard')->group(function() {
+    Route::get('/',[TodoController::class, 'index'])->name('todo.dashboard');
+    Route::get('/{todo}/details',[TodoController::class,'show'])->name('todo.details');
+    Route::get('/create', [TodoController::class, 'create'])->name('todo.create');
+    Route::post('/create', [TodoController::class, 'store'])->name('todo.store');
+    Route::get('/{todo}/edit',[TodoController::class, 'edit'])->name('todo.edit');
+    Route::patch('/{todo}/update', [TodoController::class, 'update'])->name('todo.update');
+    Route::post('/{todo}/delete',[TodoController::class,'destroy'])->name('todo.delete');
+})->middleware(['auth','verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
