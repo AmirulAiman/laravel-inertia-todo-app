@@ -34,17 +34,17 @@ class DatabaseSeeder extends Seeder
         User::find(1)->todos()->createMany([
             ['task' => 'Clean the dishes'],
             ['task' => 'Check the car', 'detail' => 'Monthly maintenance'],
-            ['task' => 'Sort the books', 'detail' => 'Sort the one in the basement.', 'status' => 'done', 'completed' => TRUE],
+            ['task' => 'Sort the books', 'detail' => 'Sort the one in the basement.', 'status' => 'done'],
             ['task' => 'Do the taxes', 'due_date' => "2023-05-01", 'status' => 'in-progress'],
-            ['task' => 'Change the lightbulb', 'detail' => 'the one in the attic', 'status' => 'done', 'completed' => TRUE],
+            ['task' => 'Change the lightbulb', 'detail' => 'the one in the attic', 'status' => 'done'],
         ]);
 
         User::find(2)->todos()->createMany([
             ['task' => 'Inform the neightbour', 'detail' => 'Ask to keep an eye on the house while we gone'],
-            ['task' => 'Buy groceries' , 'status' => 'done', 'completed' => TRUE],
+            ['task' => 'Buy groceries' , 'status' => 'done'],
             ['task' => 'Fetch the kids', 'detail' => 'Daycare close at 5pm', 'status' => 'in-progress'],
-            ['task' => 'Prepare for the family trip', 'detail' => 'Pack up some clothes', 'status' => 'done', 'completed' => TRUE],
-            ['task' => 'Check when the plane ticket', 'due_date' => "2023-05-01", 'status' => 'done', 'completed' => FALSE],
+            ['task' => 'Prepare for the family trip', 'detail' => 'Pack up some clothes', 'status' => 'done'],
+            ['task' => 'Check when the plane ticket', 'due_date' => "2023-05-01", 'status' => 'done'],
         ]);
     }
 }

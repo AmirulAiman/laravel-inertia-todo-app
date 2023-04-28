@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('detail')->nullable();
             $table->foreignIdFor(App\Models\User::class,'user_id');
             $table->date('due_date')->nullable();
-            $table->boolean('completed')->default(false);
             $table->timestamps();
         });
     }

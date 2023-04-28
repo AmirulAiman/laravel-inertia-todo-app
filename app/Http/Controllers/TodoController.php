@@ -15,10 +15,14 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $todos = Auth::user()->todos()->orderBy('status','desc')->get();
-        return Inertia::render('Dashboard', [
-            'todos' => $todos
-        ]);
+        if(Auth::check()){
+            $todos = Auth::user()->todos()->orderBy('status','desc')->get();
+            return Inertia::render('Dashboard', [
+                'todos' => $todos
+            ]);
+        } else {
+            return redirect(route('login'));
+        }
     }
 
     /**
@@ -37,7 +41,6 @@ class TodoController extends Controller
         Auth::user()->todos()->create([
             'task' => $request->task,
             'detail' => $request->detail ?? '',
-            'completed' => $request->completed ?? FALSE,
             'status' => $request->completed ? 'done' : 'new'
         ]);
 
@@ -58,7 +61,7 @@ class TodoController extends Controller
     public function edit(Todo $todo)
     {
         return Inertia::render('Todo/Edit',[
-            'task' => $todo
+            'todo' => $todo
         ]);
     }
 
@@ -71,7 +74,6 @@ class TodoController extends Controller
             'task' => $request->task,
             'detail' => $request->detail ?? '',
             'due_date' => $request->due_date ?? NULL,
-            'completed' => $request->completed ?? FALSE,
             'status' => $request->status
         ]);
         return redirect()->back();

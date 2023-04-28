@@ -5,10 +5,12 @@
     v-on:dblclick="completed"
     >
     <div class="flex justify-between items-center w-fill">
-            <div class="">
+            <Link 
+                :href="route('todo.edit', todo.id)"
+            >
                 <h1 class="font-semibold sm:font-bold font-[Poppins] text-xl sm:text-lg">{{ todo.task }}</h1>
                 <span class="font-[Poppins] text-sm sm:text-md overflow-hidden" v-if="todo.task.length > 0">{{ todo.detail }}</span>
-            </div>
+            </Link>
         </div>
     </div>
 </template>
@@ -23,7 +25,6 @@
 
     const completed = () => {
         form.status = form.status != 'done' ? 'done' : 'new'
-        form.completed = !form.completed
         form.patch(route('todo.update',props.todo.id))
     }
 
